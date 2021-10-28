@@ -26,7 +26,7 @@
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="32dp"
             android:text="All tasks"
-            android:textColor="#448AFF"
+            android:textColor="@color/color_Accent"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -45,34 +45,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+
+        <ScrollView
+            android:id="@+id/scrollView3"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="24dp"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ListView
+                    android:id="@+id/lsvTask"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </LinearLayout>
+
+
+
+        </ScrollView>
 
         <TextView
             android:id="@+id/addTask"
             android:layout_width="156dp"
             android:layout_height="45dp"
-            android:layout_marginTop="16dp"
-            android:drawableLeft="@drawable/ic_add_tap"
+            android:drawableLeft="@drawable/ic_add2"
             android:gravity="center"
-            android:textColor="@color/color_Accent"
-            android:text="Add Task"
-            android:textSize="20sp"
             android:paddingLeft="18dp"
             android:paddingRight="20dp"
+            android:text="Add Task"
+            android:textColor="@color/color_Accent"
+            android:textSize="20sp"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+
+            app:layout_constraintTop_toBottomOf="@+id/scrollView3"
             app:layout_constraintVertical_bias="0.208" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

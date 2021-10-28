@@ -29,7 +29,7 @@
             app:srcCompat="@drawable/ic_add2" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/TagAdd"
             android:layout_width="311dp"
             android:layout_height="36dp"
             android:layout_marginTop="16dp"
@@ -96,6 +96,7 @@
             android:background="@drawable/editborder"
             android:ems="10"
             android:hint="Task Date"
+            android:inputType="date"
             android:padding="10dp" />
 
         <EditText
@@ -106,18 +107,33 @@
             android:background="@drawable/editborder"
             android:ems="10"
             android:hint="Task Time"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:inputType="time"/>
 
-        <EditText
-            android:id="@+id/eventTask"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btnSave"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_margin="15dp"
-            android:background="@drawable/editborder"
-            android:ems="10"
-            android:hint="Task event"
-            android:padding="10dp" />
+            android:layout_height="55dp"
+            android:layout_margin="32dp"
+            android:background="@drawable/back_acount_item1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnchange_pass">
 
+            <TextView
+                android:id="@+id/txtBtnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save task"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

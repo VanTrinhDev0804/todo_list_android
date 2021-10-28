@@ -11,14 +11,13 @@ import android.view.WindowManager;
 import com.example.listtodo.R;
 import com.example.listtodo.fragments.AccountFragment;
 import com.example.listtodo.fragments.HomeFragment;
-import com.example.listtodo.fragments.SearchFragment;
 import com.example.listtodo.fragments.SettingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView navigationView;
-
+    private int maKH= 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         navigationView = findViewById(R.id.bottom_navigation);
+
+
+            maKH = 1 ;
+
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.body_container ,new HomeFragment()).commit();
         navigationView.setSelectedItemId(R.id.nav_home);
@@ -58,4 +62,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public int getMaKH() {
+        return maKH;
+    }
+
+
+
 }

@@ -11,6 +11,6 @@
     <color name="color_nav_bottom">#E8F5E9</color>
     <color name="color_text">#212121</color>
     <color name="border_bottom">#9E9E9E</color>
-    <color name="color_Accent">#448AFF</color>
-
+    <color name="color_Accent">#00BF9A</color>
+    <color name ="sub_text">#E0E0E0</color>
 </resources>

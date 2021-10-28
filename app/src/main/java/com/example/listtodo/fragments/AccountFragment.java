@@ -1,14 +1,33 @@
 package com.example.listtodo.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.media.Image;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.listtodo.R;
+import com.example.listtodo.dataBase.Database;
+import com.example.listtodo.views.CreateTask;
+import com.example.listtodo.views.MainActivity;
+
+import java.sql.Blob;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,10 +76,229 @@ public class AccountFragment extends Fragment {
         }
     }
 
+    Database db;
+    TextView txtEmail , txtName;
+    ImageView imageViewAccount;
+    ConstraintLayout changeInfor, changePass, Logout;
+    private MainActivity mainActivity;
+    private String email,name,pass;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_account, container, false);
+        mainActivity= (MainActivity) getActivity();
+        txtEmail = view.findViewById(R.id.profile_email);
+        txtName = view.findViewById(R.id.profile_name);
+        imageViewAccount = view.findViewById(R.id.imageAcc);
+
+        changeInfor = view.findViewById(R.id.btnchange_info);
+        changePass = view.findViewById(R.id.btnchange_pass);
+         Logout = view.findViewById(R.id.btnLog_out);
+
+
+        getDataUser();
+
+        txtEmail.setText(email);
+        txtName.setText(name);
+
+        changeInfor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangeInfor();
+
+            }
+        });
+        changePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangePassWord();
+            }
+        });
+
+        return  view;
     }
+
+    private void getDataUser() {
+        try{
+            db = new Database(AccountFragment.this.getContext());
+            int maKH = mainActivity.getMaKH();
+            Cursor c = db.query_with_result("select * from KhachHang where maKH = '"+maKH+"'");
+            while (c.moveToNext()){
+                name = c.getString(1);
+                email = c.getString(2);
+                pass = c.getString(3);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void ChangePassWord(){
+        final EditText CurrPass, NewPass, ConfirmPass;
+        TextView txtCurr, txtNew, txtConFirm;
+        LinearLayout btnExit, btnSaveChange;
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AccountFragment.this.getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView =inflater.inflate(R.layout.change_password, null);
+
+        CurrPass = dialogView.findViewById(R.id.CurrPassword);
+        NewPass =dialogView.findViewById(R.id.newPass);
+        ConfirmPass = dialogView.findViewById(R.id.confirmPas);
+
+        txtCurr = dialogView.findViewById(R.id.txtCurrPass);
+        txtNew= dialogView.findViewById(R.id.txtNewPass);
+        txtConFirm = dialogView.findViewById(R.id.txtConFirmpass);
+        btnExit = dialogView.findViewById(R.id.btnExitUpdatePass);
+        btnSaveChange = dialogView.findViewById(R.id.btnSaveUpdatePass);
+
+
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("");
+        AlertDialog b= dialogBuilder.create();
+        b.show();
+
+
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                b.dismiss();
+            }
+        });
+        btnSaveChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                getDataUser();
+
+                String CurrentPass = CurrPass.getText().toString();
+                String Newpass = NewPass.getText().toString();
+                String Confirm = ConfirmPass.getText().toString();
+                if (pass.equalsIgnoreCase(CurrentPass) && !pass.equalsIgnoreCase(Newpass)
+                        && !(Newpass.equalsIgnoreCase("")
+                        && checkConfirm(Newpass, Confirm))) {
+                                int maKH = mainActivity.getMaKH();
+                                UpdatePass(maKH, Newpass);
+                                b.dismiss();
+                    Toast.makeText(getContext(), "update password success", Toast.LENGTH_SHORT).show();
+                } else if (Newpass.equalsIgnoreCase("") || Confirm.equalsIgnoreCase("")) {
+                        txtNew.setText("*");
+                        txtConFirm.setText("*");
+                } else if(!checkConfirm(Newpass, Confirm)){
+                        txtConFirm.setText("not the same new password");
+
+                }else if(pass.equalsIgnoreCase(Newpass)) {
+                    txtNew.setText("same old password");
+                }
+
+                else {
+                        txtCurr.setText("'password is incorrect'");
+                }
+            }
+        });
+
+//        clear notification
+        EventEditTextChange(CurrPass,txtCurr);
+        EventEditTextChange(NewPass,txtNew);
+        EventEditTextChange(ConfirmPass,txtConFirm);
+
+    }
+
+    private void EventEditTextChange(EditText editText, TextView textView) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                    textView.setText("");
+            }
+        });
+    }
+
+
+    private void UpdatePass(int ma, String newpass) {
+        db = new Database(AccountFragment.this.getContext());
+        db.upDatePassWord(ma,newpass);
+        db.close();
+
+    }
+
+
+    public  boolean checkConfirm(String newPass, String conFirmpass ){
+        if(newPass.equalsIgnoreCase(conFirmpass)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    private void ChangeInfor() {
+        final EditText txtUpdateName , txtUpdateEmail;
+        LinearLayout btnExit, btnSaveChange;
+
+
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AccountFragment.this.getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView =inflater.inflate(R.layout.change_info, null);
+
+        txtUpdateName = dialogView.findViewById(R.id.updateUsers);
+        txtUpdateEmail = dialogView.findViewById(R.id.updateEmail);
+        btnExit = dialogView.findViewById(R.id.btnExitUpdateInfor);
+        btnSaveChange = dialogView.findViewById(R.id.btnSaveChangeInfo);
+
+        getDataUser();
+        txtUpdateName.setText(name);
+        txtUpdateEmail.setText(email);
+
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("");
+        AlertDialog b= dialogBuilder.create();
+        b.show();
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                b.dismiss();
+            }
+        });
+        btnSaveChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateDataUser();
+                Toast.makeText(AccountFragment.this.getContext(), "Update success !!", Toast.LENGTH_SHORT).show();
+                b.dismiss();
+            }
+
+            private void UpdateDataUser() {
+                String nameUpdate = txtUpdateName.getText().toString();
+                String emailUpdate = txtUpdateEmail.getText().toString();
+                txtEmail.setText(emailUpdate);
+                txtName.setText(nameUpdate);
+                try{
+                    db = new Database(AccountFragment.this.getContext());
+                    int maKH = mainActivity.getMaKH();
+                    db.upDateInfoUser(maKH, nameUpdate, emailUpdate);
+                    db.close();
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+    }
+
 }

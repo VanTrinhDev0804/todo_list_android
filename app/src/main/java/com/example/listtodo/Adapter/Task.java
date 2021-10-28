@@ -1,11 +1,33 @@
 package com.example.listtodo.Adapter;
 
-import java.text.DateFormat;
+
 
 public class Task {
+    private  int id;
     private String title;
     private String description;
-    private DateFormat date;
+    private String mDayOfWeek, mDate, mMonth;
+    private String time;
+    private boolean status;
+
+    public Task(int id, String title, String description, String mDayOfWeek, String mDate, String mMonth, String time, boolean status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.mDayOfWeek = mDayOfWeek;
+        this.mDate = mDate;
+        this.mMonth = mMonth;
+        this.time = time;
+        this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -23,17 +45,43 @@ public class Task {
         this.description = description;
     }
 
-    public DateFormat getDate() {
-        return date;
+    public String getmDayOfWeek() {
+        return mDayOfWeek;
     }
 
-    public void setDate(DateFormat date) {
-        this.date = date;
+    public void setmDayOfWeek(String mDayOfWeek) {
+        this.mDayOfWeek = mDayOfWeek;
     }
 
-    public Task(String title, String description, DateFormat date) {
-        this.title = title;
-        this.description = description;
-        this.date = date;
+    public String getmDate() {
+        return mDate;
+    }
+
+    public void setmDate(String mDate) {
+        this.mDate = mDate;
+    }
+
+    public String getmMonth() {
+        return mMonth;
+    }
+
+    public void setmMonth(String mMonth) {
+        this.mMonth = mMonth;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }
