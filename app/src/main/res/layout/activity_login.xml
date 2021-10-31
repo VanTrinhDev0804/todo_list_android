@@ -44,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Your Email"
+                android:text="test@gmail.com"
                 android:inputType="textPersonName"
                 android:textSize="20dp"
                 android:textColor="@color/color_text"/>
@@ -69,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:inputType="textPassword"
+                android:text="123"
                 android:textSize="20dp"
                 android:textColor="@color/color_text"/>
         </LinearLayout>

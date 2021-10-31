@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 
 public class Database extends SQLiteOpenHelper {
     public  Database(@Nullable Context context){
-        super(context,"/data/data/com.example.listtodo/dataBase/TodoList.db", null,1);
+        super(context,"/data/data/com.example.listtodo/database/TodoList.db", null,1);
     }
     public void query_no_result(String sql){
         SQLiteDatabase db = getWritableDatabase();
