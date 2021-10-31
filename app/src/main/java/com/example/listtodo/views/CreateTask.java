@@ -35,18 +35,12 @@ public class CreateTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
-
-
         TaskTitle = findViewById(R.id.titleTask);
         TaskDescription = findViewById(R.id.depsTask);
         DateTask = findViewById(R.id.dateTask);
         TimeTask = findViewById(R.id.timeTask);
-
         btnSave = findViewById(R.id.btnSave);
-
-
-
-
+//        lấy dữ liệu từ homefragment
         Intent incomingIntent = getIntent();
         boolean isUpdate = incomingIntent.getBooleanExtra("isUpdate",false);
         int id = incomingIntent.getIntExtra("index", 0);
@@ -54,7 +48,7 @@ public class CreateTask extends AppCompatActivity {
         handleEventCreateTask(isUpdate,id);
 
 
-// input day
+// select day use calendar
         DateTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,8 +65,6 @@ public class CreateTask extends AppCompatActivity {
                     }
                     },mYear, mMonth, mDay);
                     datePickerDialog.show();
-
-
             }
         });
 //        input time
@@ -95,7 +87,7 @@ public class CreateTask extends AppCompatActivity {
             }
         });
     }
-
+// lấy dữ liệu đổ vào các edittext qua id
     private void getValuesToUpdate(int id, boolean isUpdate) {
         if(isUpdate){
             String title = null;
@@ -126,6 +118,7 @@ public class CreateTask extends AppCompatActivity {
     }
 
     private void handleEventCreateTask(boolean isUpdate, int id) {
+//        update task
         if(isUpdate){
             TextView TitleTag = findViewById(R.id.TagAdd);
             TextView TitleBtnSave = findViewById(R.id.txtBtnSave);
@@ -165,7 +158,7 @@ public class CreateTask extends AppCompatActivity {
             String Date = incomingIntent.getStringExtra("date");
             int MaKH = incomingIntent.getIntExtra("maKH",0);
             DateTask.setText(Date);
-
+// tạo task mới
             btnSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -176,7 +169,6 @@ public class CreateTask extends AppCompatActivity {
                             String description = TaskDescription.getText().toString();
                             String date = DateTask.getText().toString();
                             String time = TimeTask.getText().toString();
-
                             db.addTask(MaKH,title , description, date , time , 0);// false la cv chua hoan thanh
                             db.close();
                             closeTaskAndMoveHome();
@@ -194,7 +186,7 @@ public class CreateTask extends AppCompatActivity {
             });
         }
     }
-
+// không để trống các ô input
     public boolean validateFields() {
         if(TaskTitle.getText().toString().equalsIgnoreCase("")){
             Toast.makeText(this, "Please enter a valid title", Toast.LENGTH_SHORT).show();
@@ -217,7 +209,7 @@ public class CreateTask extends AppCompatActivity {
         }
 
     }
-
+// đóng creat task và  chuyển trang  về home
     private void closeTaskAndMoveHome() {
         TaskTitle.setText("");
         TaskDescription.setText("");

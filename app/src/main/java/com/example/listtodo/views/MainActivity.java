@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.example.listtodo.R;
 import com.example.listtodo.fragments.AccountFragment;
+import com.example.listtodo.fragments.EventsFragment;
 import com.example.listtodo.fragments.HomeFragment;
 import com.example.listtodo.fragments.SettingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,16 +24,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        lấy mã khách từ login cho main  quản lý
+        Intent incomingIntent = getIntent();
+        int MaKHlogin = incomingIntent.getIntExtra("maKH",0);
+        maKH =MaKHlogin;
 
+
+//        bottom navigation cho 4 fragment Home , Event , Account , Setting
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         navigationView = findViewById(R.id.bottom_navigation);
-
-
-            maKH = 1 ;
-
-
-
         getSupportFragmentManager().beginTransaction().replace(R.id.body_container ,new HomeFragment()).commit();
         navigationView.setSelectedItemId(R.id.nav_home);
 
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nav_search:
-                        fragment = new SearchFragment();
+                        fragment = new EventsFragment();
                         break;
 
                     case R.id.nav_account:
@@ -63,10 +64,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+//    dùng để truyền mã cho các fragment
     public int getMaKH() {
         return maKH;
     }
 
-
-
+    public void setMaKH(int maKH) {
+        this.maKH = maKH;
+    }
 }

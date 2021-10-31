@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
     ArrayList<Task> tasksList;
     TaskAdater taskAdater;
 
-
+// Xóa task
     public void Delete(final int position, int index){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Message");
@@ -112,6 +112,8 @@ public class HomeFragment extends Fragment {
         builder.show();
 
     }
+
+//     update task
     public void Update(final int position, int index){
         boolean isUpdate = true;
         Intent homeUpdate = new Intent(getContext(), CreateTask.class);
@@ -119,6 +121,7 @@ public class HomeFragment extends Fragment {
         homeUpdate.putExtra("isUpdate",isUpdate);
         startActivity(homeUpdate);
     }
+//     các task đã hoàn thành
     public void Complete(final int position, int index){
         tasksList.get(position).setStatus(true);
         taskAdater.notifyDataSetChanged();
@@ -138,14 +141,11 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         view=  inflater.inflate(R.layout.fragment_home, container, false);
 
-
         TextView addTask = view.findViewById(R.id.addTask);
         ListView listView = view.findViewById(R.id.lsvTask);
         mainActivity= (MainActivity) getActivity();
 
-
-
-//    add list task item from database
+//   đọc dữ liệu từ data base
         try {
                 tasksList =new ArrayList<>();
                 db = new Database(this.getContext());
@@ -160,33 +160,18 @@ public class HomeFragment extends Fragment {
                     String time = c.getString(4);
                     int check = c.getInt(6);
 
-                    String dayOfTheWeek = null;
+                    String dayOfWeek = null;
                     String dayOfMonth =null;
                     String mMonth = null;
 //                convert date of Week
-                    @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    try {
-                        Date dt1=formatter.parse(date);
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("EEE");
-                        dayOfTheWeek = sdf.format(dt1);
-
-
-//                      convert day of month
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat doM = new SimpleDateFormat("dd");
-                        dayOfMonth = doM.format(dt1);
-
-
-//                       convert month
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat mM = new SimpleDateFormat("MMM");
-                        mMonth = mM.format(dt1);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    };
+                    dayOfWeek= ConvertDateTime(date , dayOfWeek, "EEE");
+                    dayOfMonth = ConvertDateTime(date, dayOfMonth, "dd");
+                    mMonth = ConvertDateTime(date, mMonth , "MMM");
                     boolean status = true;
                     if(check == 0 ){
                          status = false;
                     };
-                    tasksList.add(new Task(id,title, description,dayOfTheWeek, dayOfMonth,mMonth,time,status));
+                    tasksList.add(new Task(id,title, description,dayOfWeek, dayOfMonth,mMonth,time,status));
                     db.close();
                 }
 
@@ -198,7 +183,7 @@ public class HomeFragment extends Fragment {
         listView.setAdapter(taskAdater);
 
 
-//        add task
+//        click show calendar  để chọn ngày rồi thêm task mới
           addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,7 +194,22 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+// lấy các định dạng ngày theo path
+    private String ConvertDateTime(String date, String getdate ,String path) {
 
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date dt1=formatter.parse(date);
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(path);
+            getdate = sdf.format(dt1);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        };
+        return getdate;
+    }
+
+// show calendar view
     private void showBottomSheetDialog() {
 
         BottomSheetDialog bottomSheetDialog;
@@ -231,7 +231,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
                 String date = i2 + "/" + (i1 + 1) + "/" + i;
-                int maKH =mainActivity.getMaKH();
+                int maKH =mainActivity.getMaKH(); // getMaKH là getter của main Activity
                 Intent itdate = new Intent(getContext(), CreateTask.class);
                 itdate.putExtra("date", date);
                 itdate.putExtra("maKH", maKH);

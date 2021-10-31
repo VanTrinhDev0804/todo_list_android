@@ -67,6 +67,7 @@ public class TaskAdater extends BaseAdapter {
 
         Task task =tasksList.get(i);
         boolean status = task.isStatus();
+
         if(status){
             title.setText(task.getTitle()+" (Completed)");
             descrition.setText(task.getDescription());

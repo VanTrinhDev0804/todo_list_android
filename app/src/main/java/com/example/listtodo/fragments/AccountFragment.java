@@ -1,10 +1,10 @@
 package com.example.listtodo.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.Image;
+
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,7 +15,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.listtodo.R;
 import com.example.listtodo.dataBase.Database;
 import com.example.listtodo.views.CreateTask;
+import com.example.listtodo.views.LoginActivity;
 import com.example.listtodo.views.MainActivity;
 
 import java.sql.Blob;
@@ -91,18 +92,25 @@ public class AccountFragment extends Fragment {
         mainActivity= (MainActivity) getActivity();
         txtEmail = view.findViewById(R.id.profile_email);
         txtName = view.findViewById(R.id.profile_name);
-        imageViewAccount = view.findViewById(R.id.imageAcc);
-
+//        imageViewAccount = view.findViewById(R.id.imageAcc);
         changeInfor = view.findViewById(R.id.btnchange_info);
         changePass = view.findViewById(R.id.btnchange_pass);
          Logout = view.findViewById(R.id.btnLog_out);
 
-
+// lấy thông tin khách đổ vào email và tên
         getDataUser();
-
         txtEmail.setText(email);
         txtName.setText(name);
 
+//        thoát trở ra login
+        Logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent logout = new Intent(getContext(), LoginActivity.class);
+                startActivity(logout);
+            }
+        });
+//          đổi email tên
         changeInfor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +118,8 @@ public class AccountFragment extends Fragment {
 
             }
         });
+
+//        đổi mật khẩu
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +129,7 @@ public class AccountFragment extends Fragment {
 
         return  view;
     }
-
+// hàm lấy thông tin khách
     private void getDataUser() {
         try{
             db = new Database(AccountFragment.this.getContext());
@@ -135,6 +145,7 @@ public class AccountFragment extends Fragment {
             e.printStackTrace();
         }
     }
+//    hàm đổi mật khẩu
     private void ChangePassWord(){
         final EditText CurrPass, NewPass, ConfirmPass;
         TextView txtCurr, txtNew, txtConFirm;
@@ -161,31 +172,34 @@ public class AccountFragment extends Fragment {
         AlertDialog b= dialogBuilder.create();
         b.show();
 
-
+//thoát
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 b.dismiss();
             }
         });
+
+        // lưu lại sau khi đổi
         btnSaveChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 getDataUser();
-
                 String CurrentPass = CurrPass.getText().toString();
                 String Newpass = NewPass.getText().toString();
                 String Confirm = ConfirmPass.getText().toString();
-                if (pass.equalsIgnoreCase(CurrentPass) && !pass.equalsIgnoreCase(Newpass)
-                        && !(Newpass.equalsIgnoreCase("")
-                        && checkConfirm(Newpass, Confirm))) {
+
+
+                if (pass.equalsIgnoreCase(CurrentPass) && !pass.equalsIgnoreCase(Newpass)// check các pass cũ
+                        && !(Newpass.equalsIgnoreCase("")// check xem KH có nhập pass mới Không
+                        && checkConfirm(Newpass, Confirm))) {           ///Check kh nhập xác nhận có đúng không
                                 int maKH = mainActivity.getMaKH();
                                 UpdatePass(maKH, Newpass);
                                 b.dismiss();
                     Toast.makeText(getContext(), "update password success", Toast.LENGTH_SHORT).show();
                 } else if (Newpass.equalsIgnoreCase("") || Confirm.equalsIgnoreCase("")) {
-                        txtNew.setText("*");
+                        txtNew.setText("*"); // tách các trường hợp ở trên để thông báo lỗi
                         txtConFirm.setText("*");
                 } else if(!checkConfirm(Newpass, Confirm)){
                         txtConFirm.setText("not the same new password");
@@ -207,26 +221,7 @@ public class AccountFragment extends Fragment {
 
     }
 
-    private void EventEditTextChange(EditText editText, TextView textView) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                    textView.setText("");
-            }
-        });
-    }
-
-
+// hàm update pass
     private void UpdatePass(int ma, String newpass) {
         db = new Database(AccountFragment.this.getContext());
         db.upDatePassWord(ma,newpass);
@@ -234,7 +229,7 @@ public class AccountFragment extends Fragment {
 
     }
 
-
+// hàm check xem pass new  xem có giống pass confirm
     public  boolean checkConfirm(String newPass, String conFirmpass ){
         if(newPass.equalsIgnoreCase(conFirmpass)){
             return true;
@@ -243,7 +238,7 @@ public class AccountFragment extends Fragment {
             return false;
         }
     }
-
+// hàm updat infor
     private void ChangeInfor() {
         final EditText txtUpdateName , txtUpdateEmail;
         LinearLayout btnExit, btnSaveChange;
@@ -259,6 +254,7 @@ public class AccountFragment extends Fragment {
         btnExit = dialogView.findViewById(R.id.btnExitUpdateInfor);
         btnSaveChange = dialogView.findViewById(R.id.btnSaveChangeInfo);
 
+        //lấy thông tin đổ vào update
         getDataUser();
         txtUpdateName.setText(name);
         txtUpdateEmail.setText(email);
@@ -300,5 +296,25 @@ public class AccountFragment extends Fragment {
         });
 
     }
+// hàm clear các thông báo khi nhập sai và bắt dầu nhập lại
+    private void EventEditTextChange(EditText editText, TextView textView) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                textView.setText("");
+            }
+        });
+    }
+
 
 }
