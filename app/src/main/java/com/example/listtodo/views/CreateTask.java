@@ -29,7 +29,7 @@ public class CreateTask extends AppCompatActivity {
     ConstraintLayout btnSave ;
     EditText TaskTitle, TaskDescription, DateTask,TimeTask;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    private MainActivity mainActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,7 +215,12 @@ public class CreateTask extends AppCompatActivity {
         TaskDescription.setText("");
         DateTask.setText("");
         TimeTask.setText("");
-        Intent it = new Intent(CreateTask.this, MainActivity.class);
+//         lấy mã KH trả về main để load danh sách task
+        Intent incomingIntent = getIntent();
+        int MaKHback = incomingIntent.getIntExtra("maKH",0);
+        Intent it = new Intent(CreateTask.this,MainActivity.class);
+        it.putExtra("checkMaKhBack", true);
+        it.putExtra("MaKHBack", MaKHback);
         startActivity(it);
     }
 

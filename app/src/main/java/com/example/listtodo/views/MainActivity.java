@@ -25,16 +25,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        lấy mã khách từ login cho main  quản lý
-        Intent incomingIntent = getIntent();
-        int MaKHlogin = incomingIntent.getIntExtra("maKH",0);
-        maKH =MaKHlogin;
-
 
 //        bottom navigation cho 4 fragment Home , Event , Account , Setting
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         navigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.body_container ,new HomeFragment()).commit();
         navigationView.setSelectedItemId(R.id.nav_home);
+        Intent incomingIntent = getIntent();
+        int MaKHlogin = incomingIntent.getIntExtra("maKH",0);
+        boolean checkMaKHback = incomingIntent.getBooleanExtra("checkMaKhBack", false);
+        int MaKHCreate = incomingIntent.getIntExtra("MaKHBack", 0);
+
+        if(checkMaKHback){
+            maKH = MaKHCreate;
+        }
+        else {
+            maKH =MaKHlogin;
+        }
 
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
