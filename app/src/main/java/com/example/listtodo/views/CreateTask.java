@@ -21,7 +21,11 @@ import com.example.listtodo.R;
 import com.example.listtodo.dataBase.Database;
 import com.example.listtodo.fragments.HomeFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 
 public class CreateTask extends AppCompatActivity {
 
@@ -163,7 +167,7 @@ public class CreateTask extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     try{
-                        if (validateFields()){
+                        if (validateFields() && checkDateInput()){
                             db = new Database(CreateTask.this);
                             String title = TaskTitle.getText().toString();
                             String description = TaskDescription.getText().toString();
@@ -172,6 +176,9 @@ public class CreateTask extends AppCompatActivity {
                             db.addTask(MaKH,title , description, date , time , 0);// false la cv chua hoan thanh
                             db.close();
                             closeTaskAndMoveHome();
+                        }
+                        else if(!checkDateInput()){
+                            checkDateInput();
                         }
                         else{
                             validateFields();
@@ -185,6 +192,26 @@ public class CreateTask extends AppCompatActivity {
                 }
             });
         }
+    }
+
+//    check ngày nhập
+    public  boolean checkDateInput(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar c = Calendar.getInstance();
+       String strtoday = formatter.format(c.getTime());
+       Date  InputDay = null;
+       Date Today = null;
+        try {
+             Today = formatter.parse(strtoday);
+             InputDay=formatter.parse(DateTask.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(InputDay.before(Today)){
+            Toast.makeText(this, "Please enter day after today", Toast.LENGTH_SHORT).show();
+          return false;
+        }
+        else return true;
     }
 // không để trống các ô input
     public boolean validateFields() {

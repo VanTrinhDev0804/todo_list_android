@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.body_container ,new HomeFragment()).commit();
         navigationView.setSelectedItemId(R.id.nav_home);
+
         Intent incomingIntent = getIntent();
         int MaKHlogin = incomingIntent.getIntExtra("maKH",0);
         boolean checkMaKHback = incomingIntent.getBooleanExtra("checkMaKhBack", false);

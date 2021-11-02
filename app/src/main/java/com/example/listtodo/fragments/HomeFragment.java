@@ -119,6 +119,7 @@ public class HomeFragment extends Fragment {
         Intent homeUpdate = new Intent(getContext(), CreateTask.class);
         homeUpdate.putExtra("index",index );
         homeUpdate.putExtra("isUpdate",isUpdate);
+        homeUpdate.putExtra("maKH",mainActivity.getMaKH());
         startActivity(homeUpdate);
     }
 //     các task đã hoàn thành
