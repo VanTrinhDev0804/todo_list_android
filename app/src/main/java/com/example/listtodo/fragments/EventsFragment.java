@@ -91,6 +91,7 @@ public class EventsFragment extends Fragment {
 
         tasksWatting =new ArrayList<>();
         taskCompleted=new ArrayList<>();
+        tasksDeleted = new ArrayList<>();
 
 // lấy dữ liệu từ data base lên để add vào các list
         getTasksFromDataBase();
@@ -102,8 +103,8 @@ public class EventsFragment extends Fragment {
         listCompleted =  new ListVAdater(this, R.layout.task_item_events, taskCompleted);
         ViewCompleted.setAdapter(listCompleted);
 
-//        listDeleted = new ListVAdater(this, R.layout.task_item_events, tasksDeleted);
-//        ViewCompleted.setAdapter(listDeleted);
+        listDeleted = new ListVAdater(this, R.layout.task_item_events, tasksDeleted);
+        ViewDeleted.setAdapter(listDeleted);
         return view;
     }
 

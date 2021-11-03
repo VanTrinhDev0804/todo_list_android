@@ -46,25 +46,35 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int idKH = 0;
                 String mEmail = lgEmail.getText().toString();
                 String mPass = lgPass.getText().toString();
                 db = new Database(LoginActivity.this);
                 Cursor c = db.query_with_result("select * from KhachHang");
+               
+                boolean ktAcc = false;
                 while (c.moveToNext()){
-                    int idKH = c.getInt(0);
+                    idKH = c.getInt(0);
                     String emailData = c.getString(2);
                     String passData = c.getString(3);
                    if(mEmail.equalsIgnoreCase(emailData)&& mPass.equalsIgnoreCase(passData)){
-                       Intent itMain = new Intent(LoginActivity.this, MainActivity.class);
-                       itMain.putExtra("maKH",idKH);
-                       startActivity(itMain);
-                       lgEmail.setText("");
-                       lgPass.setText("");
+                       ktAcc = true;
                        break;
                    }
-                   else {
-                       Toast.makeText(LoginActivity.this, "Please check your input Email or Password", Toast.LENGTH_SHORT).show();
-                   }
+
+                }
+                
+                if(ktAcc){
+                    Intent itMain = new Intent(LoginActivity.this, MainActivity.class);
+                    itMain.putExtra("maKH",idKH);
+                    startActivity(itMain);
+                    lgEmail.setText("");
+                    lgPass.setText("");
+                }
+                else {
+
+                    Toast.makeText(LoginActivity.this, "Please check your input Email or Password", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

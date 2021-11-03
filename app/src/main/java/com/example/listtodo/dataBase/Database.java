@@ -28,6 +28,11 @@ public class Database extends SQLiteOpenHelper {
                 " values ('"+makh+"','"+title+"','"+description+"','"+date+"','"+time+"','"+status+"')";
         query_no_result(sql);
     }
+    public void backupTaskDeleted(int makh,String title , String description, String date , String time){
+        String sql = "insert into TasksDeleted (maKH, title, description , date , time )" +
+                " values ('"+makh+"','"+title+"','"+description+"','"+date+"','"+time+"')";
+        query_no_result(sql);
+    }
     // tạo tài khoản mới
     public void addAccount(String Name , String email, String Pass , String BirthDay , String gender ){
         String sql = "insert into KhachHang (tenKH,email,passWord,birthDay, gender)" +

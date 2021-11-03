@@ -17,12 +17,11 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your tasks"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:paddingLeft="10dp"
             android:background="#F50057"
-            />
+            android:paddingLeft="10dp"
+            android:text="Your tasks"
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -55,12 +54,12 @@
             android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mission Completed"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:paddingLeft="10dp"
             android:background="@color/color_Accent"
-            />
+            android:paddingLeft="10dp"
+            android:text="Mission Completed"
+            android:textColor="#4E342E"
+            android:textSize="18sp"
+            tools:ignore="TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck" />
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -70,10 +69,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <ListView
                     android:id="@+id/lsvTaskComplete"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"/>
+                    android:layout_height="100dp">
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_Accent"
+                        android:paddingLeft="10dp"
+                        android:text="Tasks Deleted"
+                        android:textColor="#4E342E"
+                        android:textSize="18sp" />
+                </ListView>
 
             </LinearLayout>
         </ScrollView>
@@ -88,15 +99,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_Accent"
-            android:paddingLeft="10dp"
-            android:text="Tasks Deleted"
-            android:textColor="#4E342E"
-            android:textSize="18sp" />
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

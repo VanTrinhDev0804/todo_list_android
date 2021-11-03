@@ -93,6 +93,16 @@ public class HomeFragment extends Fragment {
                 taskAdater.notifyDataSetChanged();
                 try{
                     db = new Database(HomeFragment.this.getContext());
+                    Cursor c = db.query_with_result("select * from Tasks where id ='"+index+"'");
+                    while (c.moveToNext()){
+                        String title = c.getString(1);
+                        String description = c.getString(2);
+                        String date = c.getString(3);
+                        String time = c.getString(4);
+                        int maKH = c.getInt(5);
+                        db.backupTaskDeleted(maKH, title, description, date, time);
+                    }
+
                     db.deleteTask(index);
                     db.close();
                 }
