@@ -65,7 +65,13 @@ public class Database extends SQLiteOpenHelper {
     public void deleteTask(int id){
         String sql = "delete from Tasks where id ='"+id+"' ";
         query_no_result(sql);
-}
+    }
+//    xoa task backup
+    public void deleteBackup(int id){
+        String sql = "delete from TasksDeleted where idDeleted ='"+id+"' ";
+        query_no_result(sql);
+    }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {

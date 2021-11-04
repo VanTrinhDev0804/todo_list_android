@@ -1,6 +1,8 @@
 package com.example.listtodo.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.listtodo.Adapter.ListVAdater;
@@ -80,6 +83,37 @@ public class EventsFragment extends Fragment {
     private MainActivity mainActivity;
     ArrayList<Task> tasksWatting, taskCompleted, tasksDeleted;
     ListVAdater listAdater;
+
+    public void deleteTasksBackup(final int position, int idtask) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Message");
+        builder.setMessage("Are you sure you want to delete this task ? ");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                tasksDeleted.remove(position);
+                listAdater.notifyDataSetChanged();
+                try{
+                    db = new Database(EventsFragment.this.getContext());
+                    db.deleteBackup(idtask);
+                    db.close();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        builder.setNegativeButton ("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,8 +131,7 @@ public class EventsFragment extends Fragment {
         ListView Viewtask = view.findViewById(R.id.lsvTask);
         RadioGroup radioGroup= view.findViewById(R.id.group_rad);
         RadioButton radWait = view.findViewById(R.id.radtaskWaiting);
-        RadioButton radComplete = view.findViewById(R.id.radCompleted);
-        RadioButton radDeleted = view.findViewById(R.id.radDeleted);
+        TextView titleEvent= view.findViewById(R.id.titleEvents);
         mainActivity= (MainActivity) getActivity();
 
 
@@ -108,22 +141,31 @@ public class EventsFragment extends Fragment {
 
         getTasksFromDataBase();
         if(radWait.isChecked()){
-            listAdater = new ListVAdater(this, R.layout.task_item_events, tasksWatting);
-            Viewtask.setAdapter(listAdater);
-        }
+            if(tasksWatting.size()==0){
+                titleEvent.setText("No Tasks");
+            }
+            else{
+                listAdater = new ListVAdater(this, R.layout.task_item_events, tasksWatting);
+                Viewtask.setAdapter(listAdater);
+            }
+            }
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.radtaskWaiting:
+                        titleEvent.setText("Your Tasks");
                         listAdater = new ListVAdater(EventsFragment.this, R.layout.task_item_events, tasksWatting);
                         Viewtask.setAdapter(listAdater);
                         break;
                     case R.id.radCompleted:
+                        titleEvent.setText("Task Completed");
                         listAdater = new ListVAdater(EventsFragment.this, R.layout.task_item_events, taskCompleted);
                         Viewtask.setAdapter(listAdater);
                         break;
                     case R.id.radDeleted:
+                        titleEvent.setText("Task Deleted");
                         getTaskDeleted();
                         listAdater = new ListVAdater(EventsFragment.this, R.layout.task_item_events, tasksDeleted);
                         Viewtask.setAdapter(listAdater);
@@ -152,7 +194,7 @@ public class EventsFragment extends Fragment {
                 dayWeek= ConvertDateTime(date , dayWeek, "EEE");
                 dayMonth = ConvertDateTime(date, dayMonth, "dd");
                 mMonth = ConvertDateTime(date, mMonth , "MMM");
-                tasksDeleted.add(new Task(id,title,description,dayWeek, dayMonth,mMonth,time,false));
+                tasksDeleted.add(new Task(id,title,description,dayWeek, dayMonth,mMonth,time,true));
             }
             db.close();
 
@@ -188,7 +230,7 @@ public class EventsFragment extends Fragment {
                     tasksWatting.add(new Task(id,title, description,dayOfWeek, dayOfMonth,mMonth,time,status));
                 }else {
                     boolean status = true;
-                    taskCompleted.add(new Task(id,title, description,dayOfWeek, dayOfMonth,mMonth,time,status));
+                    taskCompleted.add(new Task(id,title, description,dayOfWeek, dayOfMonth,mMonth,time,false));
                 }
             }
 
@@ -214,4 +256,6 @@ public class EventsFragment extends Fragment {
         };
         return getdate;
     }
+
+
 }
