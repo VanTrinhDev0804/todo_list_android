@@ -17,7 +17,7 @@
             android:background="@color/color_Accent"
             android:gravity="center"
             android:text="REGISTER NEW ACOUNT"
-            android:textColor="@color/white"
+            android:textColor="#455A64"
             android:textSize="30dp"
             android:textStyle="bold" />
 

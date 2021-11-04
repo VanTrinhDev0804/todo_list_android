@@ -9,111 +9,76 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F50057"
+            android:background="@color/color_Accent"
             android:paddingLeft="10dp"
             android:text="Your tasks"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <ScrollView
+            android:id="@+id/srossview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:ignore="SpeakableTextPresentCheck">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <ListView
-                    android:id="@+id/lsvTaskWaiting"
+                    android:id="@+id/lsvTask"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"/>
+                    android:layout_height="400dp" />
 
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <RadioGroup
+        android:id="@+id/group_rad"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/radtaskWaiting"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/color_Accent"
-            android:paddingLeft="10dp"
-            android:text="Mission Completed"
-            android:textColor="#4E342E"
-            android:textSize="18sp"
-            tools:ignore="TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck,TextContrastCheck" />
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:ignore="SpeakableTextPresentCheck">
+            android:text="Task Waitting"
+            android:checked="true"
+            android:textSize="18sp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+        <RadioButton
+            android:id="@+id/radCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Completed"
+            android:textSize="18sp"/>
 
-                <ListView
-                    android:id="@+id/lsvTaskComplete"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp">
+        <RadioButton
+            android:id="@+id/radDeleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deleted"
+            android:textSize="18sp"/>
+    </RadioGroup>
 
-                    <TextView
-                        android:id="@+id/textView9"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/color_Accent"
-                        android:paddingLeft="10dp"
-                        android:text="Tasks Deleted"
-                        android:textColor="#4E342E"
-                        android:textSize="18sp" />
-                </ListView>
 
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:ignore="SpeakableTextPresentCheck">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <ListView
-                    android:id="@+id/lsvTaskDeleted"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"/>
-
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

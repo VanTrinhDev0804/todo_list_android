@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.listtodo.Adapter.ListVAdater;
@@ -77,42 +79,64 @@ public class EventsFragment extends Fragment {
     private View view;
     private MainActivity mainActivity;
     ArrayList<Task> tasksWatting, taskCompleted, tasksDeleted;
-    ListVAdater listWaitAdater,listCompleted, listDeleted;
+    ListVAdater listAdater;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_events, container, false);
+
+        return view;
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ListView Viewtask = view.findViewById(R.id.lsvTask);
+        RadioGroup radioGroup= view.findViewById(R.id.group_rad);
+        RadioButton radWait = view.findViewById(R.id.radtaskWaiting);
+        RadioButton radComplete = view.findViewById(R.id.radCompleted);
+        RadioButton radDeleted = view.findViewById(R.id.radDeleted);
         mainActivity= (MainActivity) getActivity();
-        ListView ViewWaiting = view.findViewById(R.id.lsvTaskWaiting);
-        ListView ViewCompleted = view.findViewById(R.id.lsvTaskComplete);
-        ListView ViewDeleted = view.findViewById(R.id.lsvTaskDeleted);
 
 
-        tasksWatting =new ArrayList<>();
-        taskCompleted=new ArrayList<>();
+        tasksWatting = new ArrayList<>();
+        taskCompleted = new ArrayList<>();
         tasksDeleted = new ArrayList<>();
 
-// lấy dữ liệu từ data base lên để add vào các list
         getTasksFromDataBase();
-        getTaskDeleted();
-        // add dữ liệu vao listview
-        listWaitAdater = new ListVAdater(this, R.layout.task_item_events, tasksWatting);
-        ViewWaiting.setAdapter(listWaitAdater);
-
-        listCompleted =  new ListVAdater(this, R.layout.task_item_events, taskCompleted);
-        ViewCompleted.setAdapter(listCompleted);
-
-        listDeleted = new ListVAdater(this, R.layout.task_item_events, tasksDeleted);
-        ViewDeleted.setAdapter(listDeleted);
-        return view;
+        if(radWait.isChecked()){
+            listAdater = new ListVAdater(this, R.layout.task_item_events, tasksWatting);
+            Viewtask.setAdapter(listAdater);
+        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.radtaskWaiting:
+                        listAdater = new ListVAdater(EventsFragment.this, R.layout.task_item_events, tasksWatting);
+                        Viewtask.setAdapter(listAdater);
+                        break;
+                    case R.id.radCompleted:
+                        listAdater = new ListVAdater(EventsFragment.this, R.layout.task_item_events, taskCompleted);
+                        Viewtask.setAdapter(listAdater);
+                        break;
+                    case R.id.radDeleted:
+                        getTaskDeleted();
+                        listAdater = new ListVAdater(EventsFragment.this, R.layout.task_item_events, tasksDeleted);
+                        Viewtask.setAdapter(listAdater);
+                        break;
+                }
+            }
+        });
     }
 
     private void getTaskDeleted() {
         try {
             db = new Database(this.getContext());
             int maKH =mainActivity.getMaKH();
-
             Cursor cursor = db.query_with_result("select * from TasksDeleted where maKH ='"+maKH+"'");
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(0);
