@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.listtodo.R;
+import com.example.listtodo.views.LoginActivity;
 import com.example.listtodo.views.MainActivity;
 
 /**
@@ -88,16 +89,15 @@ public class SettingFragment extends Fragment {
                    @Override
                    public void onClick(DialogInterface dialogInterface, int i) {
                        getActivity().finish();
+                       onDestroy();
                    }
-               });
-
-               builder.setNegativeButton ("No", new DialogInterface.OnClickListener() {
+               }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                    @Override
                    public void onClick(DialogInterface dialogInterface, int i) {
                        dialogInterface.cancel();
                    }
                });
-               
+
                builder.show();
            }
        });

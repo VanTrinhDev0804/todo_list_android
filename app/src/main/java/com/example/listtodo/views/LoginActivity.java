@@ -1,5 +1,7 @@
 package com.example.listtodo.views;
 
+import static java.lang.System.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -88,7 +90,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+
+
     }
+
 
     private void registerAccount() {
 

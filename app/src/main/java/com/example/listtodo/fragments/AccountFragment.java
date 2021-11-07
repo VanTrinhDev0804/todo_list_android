@@ -107,6 +107,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent logout = new Intent(getContext(), LoginActivity.class);
+                getActivity().finish();
                 startActivity(logout);
             }
         });
@@ -191,9 +192,9 @@ public class AccountFragment extends Fragment {
                 String Confirm = ConfirmPass.getText().toString();
 
 
-                if (pass.equalsIgnoreCase(CurrentPass) && !pass.equalsIgnoreCase(Newpass)// check các pass cũ
-                        && !(Newpass.equalsIgnoreCase("")// check xem KH có nhập pass mới Không
-                        && checkConfirm(Newpass, Confirm))) {           ///Check kh nhập xác nhận có đúng không
+                if (pass.equalsIgnoreCase(CurrentPass) && !pass.equalsIgnoreCase(Newpass)
+                        && !Newpass.equalsIgnoreCase("")&& !Confirm.equalsIgnoreCase("")
+                        && Confirm.equalsIgnoreCase(Newpass)) {
                                 int maKH = mainActivity.getMaKH();
                                 UpdatePass(maKH, Newpass);
                                 b.dismiss();
@@ -201,7 +202,7 @@ public class AccountFragment extends Fragment {
                 } else if (Newpass.equalsIgnoreCase("") || Confirm.equalsIgnoreCase("")) {
                         txtNew.setText("*"); // tách các trường hợp ở trên để thông báo lỗi
                         txtConFirm.setText("*");
-                } else if(!checkConfirm(Newpass, Confirm)){
+                } else if(!Newpass.equalsIgnoreCase(Confirm)){
                         txtConFirm.setText("not the same new password");
 
                 }else if(pass.equalsIgnoreCase(Newpass)) {
@@ -229,20 +230,11 @@ public class AccountFragment extends Fragment {
 
     }
 
-// hàm check xem pass new  xem có giống pass confirm
-    public  boolean checkConfirm(String newPass, String conFirmpass ){
-        if(newPass.equalsIgnoreCase(conFirmpass)){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+
 // hàm updat infor
     private void ChangeInfor() {
         final EditText txtUpdateName , txtUpdateEmail;
         LinearLayout btnExit, btnSaveChange;
-
 
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AccountFragment.this.getContext());

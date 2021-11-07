@@ -140,6 +140,7 @@ public class EventsFragment extends Fragment {
         tasksDeleted = new ArrayList<>();
 
         getTasksFromDataBase();
+        getTaskDeleted();
         if(radWait.isChecked()){
             if(tasksWatting.size()==0){
                 titleEvent.setText("No Tasks");
@@ -166,7 +167,7 @@ public class EventsFragment extends Fragment {
                         break;
                     case R.id.radDeleted:
                         titleEvent.setText("Task Deleted");
-                        getTaskDeleted();
+
                         listAdater = new ListVAdater(EventsFragment.this, R.layout.task_item_events, tasksDeleted);
                         Viewtask.setAdapter(listAdater);
                         break;
